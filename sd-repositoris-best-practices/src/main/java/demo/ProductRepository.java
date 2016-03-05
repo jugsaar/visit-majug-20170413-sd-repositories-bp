@@ -15,8 +15,11 @@
  */
 package demo;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 
 /**
  * Repository interface to access {@link Product}s.
@@ -27,11 +30,29 @@ import org.springframework.data.domain.Pageable;
 public interface ProductRepository extends ReadOnlyRepository<Product> {
 
 	/**
-	 * Returns a {@link Page} of {@link Product}s having a description which contains the given snippet.
+	 * Returns a {@link Page} of {@link Product}s having a description which
+	 * contains the given snippet.
 	 * 
 	 * @param description
 	 * @param pageable
 	 * @return
 	 */
 	Page<Product> findByDescriptionContaining(String description, Pageable pageable);
+
+	/**
+	 * Returns all {@link Product}s having the given attribute.
+	 * 
+	 * Note: The query can be specified in the following ways:
+	 * <ol>
+	 * <li>via the {@link Query} annotation</li>
+	 * <li>via the <code>META-INF/jpa-named-queries.properties</code> file</li>
+	 * <li>via a {@code named-query} element in the
+	 * <code>META-INF/orm.xml</code> file</li>
+	 * </ol>
+	 * 
+	 * @param attribute
+	 * @return
+	 */
+	@Query("select p from Product p where p.attributes[?1] = ?2")
+	List<Product> findByAttributeAndValue(String attribute, String value);
 }
