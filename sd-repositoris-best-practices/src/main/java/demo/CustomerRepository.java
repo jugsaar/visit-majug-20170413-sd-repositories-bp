@@ -15,8 +15,11 @@
  */
 package demo;
 
+import java.util.List;
+
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * {@link Repository} to access {@link Customer} instances.
@@ -36,4 +39,19 @@ interface CustomerRepository extends PagingAndSortingRepository<Customer, Long> 
 	 * @return
 	 */
 	Customer findByEmailAddress(EmailAddress emailAddress);
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.springframework.data.repository.CrudRepository#findAll()
+	 */
+	List<Customer> findAll();
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.springframework.data.repository.CrudRepository#save(S)
+	 */
+	@Transactional(timeout = 10)
+	<S extends Customer> S save(S entity);
 }
