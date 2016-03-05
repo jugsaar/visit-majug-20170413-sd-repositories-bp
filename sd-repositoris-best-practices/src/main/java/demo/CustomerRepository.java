@@ -17,6 +17,7 @@ package demo;
 
 import java.util.List;
 
+import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Thomas Darimont
  * @since Step 2
  */
-interface CustomerRepository extends PagingAndSortingRepository<Customer, Long> {
+interface CustomerRepository extends PagingAndSortingRepository<Customer, Long>, QueryDslPredicateExecutor<Customer> {
 
 	/**
 	 * Returns the customer with the given {@link EmailAddress}.
@@ -54,4 +55,16 @@ interface CustomerRepository extends PagingAndSortingRepository<Customer, Long> 
 	 */
 	@Transactional(timeout = 10)
 	<S extends Customer> S save(S entity);
+
+	/**
+	 * Returns the customer with the given {@link EmailAddress} string.
+	 * 
+	 * @param emailAddress
+	 * @return
+	 * 
+	 * @since Step 8
+	 */
+	default Customer findByEmailAddress(String emailAddress) {
+		return findByEmailAddress(new EmailAddress(emailAddress));
+	}
 }
