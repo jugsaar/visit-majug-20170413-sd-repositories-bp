@@ -1,0 +1,16 @@
+# Maven
+target/
+.mvn/
+
+# Eclipse
+.settings/
+.project
+.classpath
+.springBeans
+.sonar4clipse
+*.sonar4clipseExternals
+
+# Intellij
+.idea/
+*.iml
+*.iws
