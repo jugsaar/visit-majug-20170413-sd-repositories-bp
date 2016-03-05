@@ -54,8 +54,8 @@ public class Customer extends AbstractEntity {
 	 */
 	public Customer(String firstname, String lastname) {
 
-		Assert.hasText(firstname);
-		Assert.hasText(lastname);
+		Assert.hasText(firstname, "'firstname' must not be empty");
+		Assert.hasText(lastname, "'lastname' must not be empty");
 
 		this.firstname = firstname;
 		this.lastname = lastname;
@@ -73,7 +73,7 @@ public class Customer extends AbstractEntity {
 	 */
 	public void add(Address address) {
 
-		Assert.notNull(address);
+		Assert.notNull(address, "'address' must not be null");
 		this.addresses.add(address);
 	}
 
