@@ -117,4 +117,13 @@ public class ProductRepositoryIntegrationTest {
 		assertThat(result.getPrice()).isCloseTo(macbook.getPrice().multiply(new BigDecimal("1.2")),
 				Percentage.withPercentage(1));
 	}
+
+	/**
+	 * @since Step 10
+	 */
+	@Test
+	public void executedsFindAllWithMyGenericMethod() {
+
+		assertThat(repository.findAllWithMyGenericMethod()).asList().containsAll(repository.findAll());
+	}
 }

@@ -27,7 +27,8 @@ import org.springframework.data.jpa.repository.Query;
  * @author Oliver Gierke
  * @author Thomas Darimont
  */
-public interface ProductRepository extends ReadOnlyRepository<Product>, ProductRepositoryCustom {
+public interface ProductRepository
+		extends ReadOnlyRepository<Product>, ProductRepositoryCustom, ExtendedRepository<Product, Long> {
 
 	/**
 	 * Returns a {@link Page} of {@link Product}s having a description which
