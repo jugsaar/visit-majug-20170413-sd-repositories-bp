@@ -15,11 +15,13 @@
  */
 package demo;
 
+import com.querydsl.core.types.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.querydsl.core.types.Predicate;
+import javax.validation.Valid;
 
 /**
  * @author Thomas Darimont
@@ -28,29 +30,44 @@ import com.querydsl.core.types.Predicate;
 @RestController
 class CustomerController {
 
-	private final CustomerRepository repository;
+  private final CustomerRepository repository;
 
-	@Autowired
-	public CustomerController(CustomerRepository repository) {
-		this.repository = repository;
-	}
+  @Autowired
+  public CustomerController(CustomerRepository repository) {
+    this.repository = repository;
+  }
 
-	/**
-	 * Find with dynamically generated predicates.
-	 * 
-	 * <pre>
-	 * curl -v http://localhost:8080/customers/search\?firstname=Ralf | jq .
-	 * </pre>
-	 * 
-	 * <pre>
-	 * curl -v http://localhost:8080/customers/search\?lastname=Daub | jq .
-	 * </pre>
-	 * 
-	 * @param predicate
-	 * @return
-	 */
-	@RequestMapping("/search")
-	public Iterable<Customer> findAllBy(Predicate predicate) {
-		return repository.findAll(predicate);
-	}
+  /**
+   * Find with dynamically generated predicates.
+   * <p>
+   * <pre>
+   * curl -v http://localhost:8080/customers/search\?firstname=Ralf | jq .
+   * </pre>
+   * <p>
+   * <pre>
+   * curl -v http://localhost:8080/customers/search\?lastname=Daub | jq .
+   * </pre>
+   *
+   * @param predicate
+   * @return
+   */
+  @GetMapping("/search")
+  Iterable<Customer> findAllBy(Predicate predicate) {
+    return repository.findAll(predicate);
+  }
+
+  /**
+   * Restrict queries to a subset of fields via Query by Example and a custom query Object.
+   *
+   * <pre>
+   * http://localhost:8080/customers/search2?firstname=Ralf&lastname=St
+   * </pre>
+   *
+   * @param customerQuery
+   * @return
+   */
+  @GetMapping("/search2")
+  Iterable<Customer> findByExample(@Valid CustomerQuery customerQuery) {
+    return repository.findAll(customerQuery.toExample());
+  }
 }

@@ -15,12 +15,13 @@
  */
 package demo;
 
-import java.util.List;
-
 import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.Repository;
+import org.springframework.data.repository.query.QueryByExampleExecutor;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * {@link Repository} to access {@link Customer} instances.
@@ -29,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Thomas Darimont
  * @since Step 2
  */
-interface CustomerRepository extends PagingAndSortingRepository<Customer, Long>, QueryDslPredicateExecutor<Customer> {
+interface CustomerRepository extends PagingAndSortingRepository<Customer, Long>, QueryDslPredicateExecutor<Customer>, QueryByExampleExecutor<Customer> {
 
 	/**
 	 * Returns the customer with the given {@link EmailAddress}.

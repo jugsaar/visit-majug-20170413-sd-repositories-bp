@@ -15,14 +15,13 @@
  */
 package demo;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.List;
-
+import com.querydsl.core.types.dsl.BooleanExpression;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -30,7 +29,10 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.querydsl.core.types.dsl.BooleanExpression;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.startsWith;
 
 /**
  * Integration tests for {@link CustomerRepository}.
@@ -175,5 +177,17 @@ public class CustomerRepositoryIntegrationTest {
 
 		assertThat(result).asList().hasSize(2);
 		assertThat(result).asList().containsExactly(dietmar, ralf);
+	}
+
+	/**
+	 * @since Sep 12
+	 */
+	@Test
+	public void executesQueryByExample() {
+
+		Customer ralf = repository.findOne(Example.of(new Customer("Ralf", "Stein"), ExampleMatcher.matching().withMatcher("lastname", startsWith())));
+
+		assertThat(ralf).isNotNull();
+		assertThat(ralf.getLastname()).isEqualTo("Steinbach");
 	}
 }
