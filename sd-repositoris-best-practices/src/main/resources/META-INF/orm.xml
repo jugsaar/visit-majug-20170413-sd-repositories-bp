@@ -3,7 +3,9 @@
 
 	<!-- custom query via JPA orm.xml
 	<named-query name="Product.findByAttributeAndValue">
-		<query>select p from Product p where p.attributes[?1] = ?2</query>
+		<query>
+		--Product.findByAttributeAndValue
+		select p from Product p where p.attributes[?1] = ?2</query>
 	</named-query>
 	--> 
 	
